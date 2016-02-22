@@ -1,0 +1,46 @@
+@(message: String)
+
+@main("Welcome to Play") {
+
+    <h3>Chat</h3>
+    
+    <div>
+    	<ul id="messages">
+    	</ul>
+    </div>
+    
+    <div>
+		<input type="text" id="message" />
+		<button id="send">Send</button>    
+    </div>
+    
+    <script	type="text/javascript">
+    
+    $(function(){
+
+		var messages = $('#messages');
+
+		var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
+	    var chat = new WS('@routes.ChatController.chat().webSocketURL(request)');
+	    
+	    var send = function() {
+	    }
+	    
+	    var receive = function(event) {
+	    	console.log(event.data);
+	    	messages.append('<li>' + event.data +  '</li>')
+	    }
+	    
+	    chat.onmessage = receive
+	    
+	    $('#send').on('click', function() {
+	    	var message = $('#message'); 
+	    	chat.send(message.val());
+	    	message.val('');
+	    });
+    
+    });
+    
+    </script>
+
+}

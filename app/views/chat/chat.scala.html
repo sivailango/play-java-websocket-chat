@@ -1,0 +1,98 @@
+@* chat Template File *@
+@(id: String, users: List[User])
+
+@main("Valore") {
+	
+	<div>
+		<h3>Users</h3>
+		@for(u <- users) {
+			<p>@u.id</p>
+		}
+	</div>
+	
+	<hr />
+	
+	<h3>My ID : @id</h3>
+	
+	<hr />
+	
+	<div>
+		<h3>Messages</h3>
+		<ul id="messages">
+		</ul>
+	</div>
+	
+	<hr />
+	
+	<div>
+		<h3>Chat</h3>
+		<div>
+			<input type="text" id="message" />
+			<button id="send">send</button>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+	
+	/*
+
+	$(function(){
+
+		var messages = $('#messages');
+
+		var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
+	    var chat = new WS('@routes.ChatController.chat().webSocketURL(request)');
+	    
+	    var send = function() {
+	    }
+	    
+	    var receive = function(event) {
+	    	console.log(event.data);
+	    	messages.append('<li>' + event.data +  '</li>')
+	    }
+	    
+	    chat.onmessage = receive
+	    
+	    $('#send').on('click', function() {
+	    	var message = $('#message'); 
+	    	chat.send(message.val());
+	    	message.val('');
+	    });
+    
+    });
+    */
+    
+    $(function(){
+
+		var messages = $('#messages');
+
+		var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
+	    var chat = new WS('@routes.ChatController.chat().webSocketURL(request)');
+	    
+	    var send = function() {
+	    }
+	    
+	    var receive = function(event) {
+	    	console.log(event.data);
+	    	messages.append('<li>' + event.data +  '</li>')
+	    }
+	    
+	    //chat.onmessage = receive
+	    
+	    $('#send').on('click', function() {
+	    	var message = $('#message'); 
+	    	chat.send(JSON.stringify({
+	    		senderId : '',
+	    		receiverId : '',
+	    		message : message.val()
+	    	}));
+	    	message.val('');
+	    });
+    
+    });
+    
+    
+	
+	</script>
+	
+}
